@@ -17,7 +17,6 @@ rtr.post(
 
 rtr.post(
   '/login',
-  jwt.verifyToken,
   validateAgainst(loginHandler.schema),
   loginHandler.handler
 )
