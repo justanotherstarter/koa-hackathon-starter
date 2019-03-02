@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+/* eslint-disable no-unused-vars */
+
+require('dotenv').config()
+const db = require('../lib/db')
+const fs = require('fs')
+const path = require('path')
+
+// Get list of models from models directory
+const models = fs
+  .readdirSync('./models/')
+  .filter(f => path.extname(f) === '.js')
+
+// Define models
+for (let model of models) {
+  require(`../models/${model}`)
+}
+
+// Check if -f was passed
+const force =
+  process.argv[2] === '--force' || process.argv[2] === '-f'
+    ? true
+    : false
+    
+// Sync tables
+!(() => {
+  // If force is true, all old data will be deleted
+  db.sync({ force })
+    .then(() => db.close())
+    .catch(e => console.error(e))
+})()

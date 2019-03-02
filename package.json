@@ -1,0 +1,33 @@
+{
+  "name": "koa-hackathon-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "createscripts": "chmod a+x ./bin/*",
+    "serve": "./bin/serve",
+    "serve:dev": "nodemon bin/serve",
+    "createtables": "./bin/createtables",
+    "createtables-force": "./bin/createtables -f"
+  },
+  "keywords": [],
+  "author": "Angad Singh <angadsingh567890@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "bcrypt": "^3.0.4",
+    "dotenv": "^6.2.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.0",
+    "koa-response-time": "^2.1.0",
+    "koa-router": "github:dotangad/koa-router",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.42.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

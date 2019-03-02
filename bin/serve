@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const http = require('http')
+const app = require('../app')
+const port = process.env.PORT || 300
+
+http
+  .createServer(app.callback())
+  .listen(port, () => console.log(`> Listening on http://localhost:${port}`))
