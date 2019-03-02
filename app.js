@@ -6,23 +6,18 @@ const routes = require('./routes')
 
 const app = new Koa()
 
-// Custom error handling
-app.context.throw = (ctx, status, message, error) => {
-  ctx.status = status
-  ctx.body = {
-    success: false,
-    message,
-    error
-  }
-}
-
-app.context.respond = (ctx, status, success, message, extra) => {
+app.context.send = (ctx, status, success, message, extra) => {
   ctx.status = status
   ctx.body = {
     success,
     message,
     ...extra
   }
+}
+
+// Custom error handling
+app.context.throw = (ctx, status, message, error) => {
+  ctx.send(ctx, status, false, message, { error })
 }
 
 app.use(logger())

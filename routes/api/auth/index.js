@@ -6,11 +6,7 @@ const loginHandler = require('./login')
 const rtr = new Router()
 
 rtr.all('/', async ctx => {
-  // ctx.throw(200, 'ell0')
-  ctx.body = {
-    success: true,
-    message: 'koa-hackathon-starter auth'
-  }
+  ctx.send(ctx, 200, true, 'koa-hackathon-starter auth')
 })
 
 rtr.post(

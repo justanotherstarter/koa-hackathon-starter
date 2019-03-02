@@ -6,12 +6,6 @@ const rtr = new Router()
 rtr.use('/api', apiRoutes.routes(), apiRoutes.allowedMethods())
 
 // Handle 404s
-rtr.all('*', async ctx => {
-  ctx.status = 404
-  ctx.body = {
-    success: false,
-    message: 'Resource not found'
-  }
-})
+rtr.all('*', async ctx => ctx.throw(ctx, 404, 'Resource not found'))
 
 module.exports = rtr

@@ -4,11 +4,8 @@ const rtr = new Router()
 
 rtr.use('/auth', authRoutes.routes(), authRoutes.allowedMethods())
 
-rtr.get('/', async ctx => {
-  ctx.body = {
-    success: true,
-    messsage: 'Welcome to koa-hackathon-starter API!'
-  }
-})
+rtr.get('/', async ctx =>
+  ctx.send(ctx, 200, true, 'Welcome to koa-hackathon-starter API!')
+)
 
 module.exports = rtr

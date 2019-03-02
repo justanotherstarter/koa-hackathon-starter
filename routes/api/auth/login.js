@@ -38,11 +38,9 @@ module.exports = {
         )
       }
 
-      ctx.body = {
-        success: true,
-        message: `Logged in as ${u.dataValues.fullName}`,
+      ctx.send(ctx, 200, true, `Logged in as ${u.dataValues.fullName}`, {
         token: await jwt.createToken(u.dataValues)
-      }
+      })
     } catch (e) {
       const err = JSON.parse(e.message)
       ctx.throw(ctx, err.status || 500, err.message || e.message, err.error)

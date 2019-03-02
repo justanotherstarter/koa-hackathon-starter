@@ -1,6 +1,7 @@
 const User = require('../../../models/User')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
+const jwt = require('../../../lib/jwt')
 
 module.exports = {
   schema: Joi.object().keys({
@@ -37,11 +38,15 @@ module.exports = {
         password: await bcrypt.hash(password, 14)
       })
 
-      ctx.body = {
-        success: true,
-        message: 'User created',
-        user: u.dataValues
+      // Create token
+      const token = await jwt.createToken(u.dataValues)
+      if (!token) {
+        // Delete from db
+        await User.destroy({ where: { id: u.dataValues.id } })
+        throw new Error(JSON.stringify({ status: 401, message: 'JWT Error' }))
       }
+
+      ctx.send(ctx, 200, true, 'User created', { token })
     } catch (e) {
       const err = JSON.parse(e.message)
       ctx.throw(ctx, err.status || 500, err.message || e.message, err.error)
