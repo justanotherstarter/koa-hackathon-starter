@@ -1,6 +1,5 @@
 const Router = require('koa-router')
 const { validateAgainst } = require('../../../lib/validation')
-const jwt = require('../../../lib/jwt')
 const registerHandler = require('./register')
 const loginHandler = require('./login')
 const rtr = new Router()
@@ -15,10 +14,6 @@ rtr.post(
   registerHandler.handler
 )
 
-rtr.post(
-  '/login',
-  validateAgainst(loginHandler.schema),
-  loginHandler.handler
-)
+rtr.post('/login', validateAgainst(loginHandler.schema), loginHandler.handler)
 
 module.exports = rtr
