@@ -1,7 +1,7 @@
-const User = require('../../../models/User')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 const jwt = require('../../../lib/jwt')
+const User = require('../../../models/User')
 
 module.exports = {
   schema: Joi.object().keys({
@@ -17,39 +17,34 @@ module.exports = {
       .required()
   }),
   handler: async ctx => {
+    const { fullName, email, password } = ctx.request.body
+
+    // Add to db and check for errors
     try {
-      const { fullName, email, password } = ctx.request.body
-
-      // Check if account with the same email exists
-      const uEmail = await User.findOne({ where: { email } })
-      if (uEmail) {
-        throw new Error(
-          JSON.stringify({
-            status: 400,
-            message: 'An account with the same email is already registered'
-          })
-        )
-      }
-
-      // Add to db if everything is fine
       const u = await User.create({
         fullName,
         email,
         password: await bcrypt.hash(password, 14)
       })
-
-      // Create token
-      const token = await jwt.createToken(u.dataValues)
-      if (!token) {
-        // Delete from db
-        await User.destroy({ where: { id: u.dataValues.id } })
-        throw new Error(JSON.stringify({ status: 401, message: 'JWT Error' }))
-      }
-
-      ctx.send(ctx, 200, true, 'User created', { token })
     } catch (e) {
-      const err = JSON.parse(e.message)
-      ctx.throw(ctx, err.status || 500, err.message || e.message, err.error)
+      // Check for duplicate email and username
+      e.name === 'SequelizeUniqueConstraintError'
+        ? ctx.throw(
+            ctx,
+            500,
+            `An account with the same ${Object.keys(e.fields).join(
+              ','
+            )} is already registered`,
+            e
+          )
+        : ctx.throw(ctx, 500, 'Database error', e)
     }
+
+    // Create token
+    const token = await jwt.createToken(u.dataValues)
+    // Check if token was signed correctly
+    token
+      ? ctx.send(ctx, 200, true, 'User created', { token })
+      : ctx.throw(ctx, 500, "Couldn't sign token (JWT Error)")
   }
 }
