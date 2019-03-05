@@ -5,6 +5,7 @@ const rt = require('koa-response-time')
 const static = require('koa-static')
 const compress = require('koa-compress')
 const helmet = require('koa-helmet')
+const loggerTransporter = require('debug')('req-logger')
 const routes = require('./routes')
 
 const app = new Koa()
@@ -26,7 +27,7 @@ app.context.throw = (ctx, status, message, error) => {
   ctx.send(ctx, status, false, message, { error })
 }
 
-app.use(logger())
+app.use(logger(str => loggerTransporter(str)))
 app.use(rt())
 app.use(compress())
 app.use(helmet())
