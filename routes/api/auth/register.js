@@ -1,11 +1,11 @@
+/* eslint-disable quotes */
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 const jwt = require('../../../lib/jwt')
-const User = require('../../../models/User')
 
 module.exports = {
   schema: Joi.object().keys({
-    fullName: Joi.string()
+    username: Joi.string()
       .min(1)
       .required(),
     email: Joi.string()
@@ -17,15 +17,22 @@ module.exports = {
       .required()
   }),
   handler: async ctx => {
-    const { fullName, email, password } = ctx.request.body
+    const { username, email, password } = ctx.request.body
 
     // Add to db and check for errors
     try {
-      const u = await User.create({
-        fullName,
+      const u = await ctx.User.create({
+        username,
         email,
         password: await bcrypt.hash(password, 14)
       })
+
+      // Create token
+      const token = jwt.createToken(u.dataValues)
+      // Check if token was signed correctly
+      token
+        ? ctx.send(ctx, 200, true, 'User created', { token })
+        : ctx.throw(ctx, 500, "Couldn't sign token (JWT Error)")
     } catch (e) {
       // Check for duplicate email and username
       e.name === 'SequelizeUniqueConstraintError'
@@ -38,13 +45,7 @@ module.exports = {
             e
           )
         : ctx.throw(ctx, 500, 'Database error', e)
+        return
     }
-
-    // Create token
-    const token = await jwt.createToken(u.dataValues)
-    // Check if token was signed correctly
-    token
-      ? ctx.send(ctx, 200, true, 'User created', { token })
-      : ctx.throw(ctx, 500, "Couldn't sign token (JWT Error)")
   }
 }

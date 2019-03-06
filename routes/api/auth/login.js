@@ -1,4 +1,3 @@
-const User = require('../../../models/User')
 const jwt = require('../../../lib/jwt')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
@@ -18,7 +17,7 @@ module.exports = {
       const { email, password } = ctx.request.body
 
       // Check if account  exists
-      const u = await User.findOne({ where: { email } })
+      const u = await ctx.User.findOne({ where: { email } })
       if (!u) {
         throw new Error(
           JSON.stringify({

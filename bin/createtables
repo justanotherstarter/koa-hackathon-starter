@@ -19,10 +19,8 @@ for (let model of models) {
 
 // Check if -f was passed
 const force =
-  process.argv[2] === '--force' || process.argv[2] === '-f'
-    ? true
-    : false
-    
+  process.argv[2] === '--force' || process.argv[2] === '-f' ? true : false
+
 // Sync tables
 !(() => {
   // If force is true, all old data will be deleted
