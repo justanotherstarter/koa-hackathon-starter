@@ -1,6 +1,6 @@
 # koa-hackathon-starter
 
-Koa and react boilerplate app which uses mysql as it's database and Sequelize as an ORM.
+Koa boilerplate app which uses mysql as it's database and Sequelize as an ORM.
 
 ## Setup
 
@@ -10,6 +10,7 @@ Koa and react boilerplate app which uses mysql as it's database and Sequelize as
 4. Create a database (with the same name in your `.env`) using your favourite DB admin tool.
 5. Run `npm run createscripts`, this will handle permissions for all the scripts in `bin/`.
 6. Run `npm run createtables`, this will create tables in your database from your models.
+8. Put your frontend in `static/`.
 7. You're done! Launch the app with `npm run serve:dev` and open it in your browser.
 
 ## TODO
