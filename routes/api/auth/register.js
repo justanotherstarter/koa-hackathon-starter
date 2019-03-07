@@ -21,7 +21,7 @@ module.exports = {
 
     // Add to db and check for errors
     try {
-      const u = await ctx.User.create({
+      const u = await ctx.models.User.create({
         username,
         email,
         password: await bcrypt.hash(password, 14)

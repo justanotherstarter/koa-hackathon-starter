@@ -27,15 +27,17 @@ app.context.throw = (ctx, status, message, error) => {
 }
 
 // Mount models onto app.context
-const models = fs
+const modelFiles = fs
   .readdirSync('./models/')
   .filter(f => path.extname(f) === '.js')
-for (let model of models) {
-  Object.defineProperty(app.context, path.basename(model, '.js'), {
+const models = {}
+for (let model of modelFiles) {
+  Object.defineProperty(models, path.basename(model, '.js'), {
     value: require(`./models/${model}`),
     writable: false
   })
 }
+Object.defineProperty(app.context, 'models', { value: models, writable: false })
 
 // Serve static assets for react app
 app.use(static(__dirname + '/static', { defer: true }))

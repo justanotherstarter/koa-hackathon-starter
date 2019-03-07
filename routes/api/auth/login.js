@@ -17,7 +17,7 @@ module.exports = {
       const { email, password } = ctx.request.body
 
       // Check if account  exists
-      const u = await ctx.User.findOne({ where: { email } })
+      const u = await ctx.models.User.findOne({ where: { email } })
       if (!u) {
         throw new Error(
           JSON.stringify({
