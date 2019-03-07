@@ -13,36 +13,36 @@ module.exports = {
       .required()
   }),
   handler: async ctx => {
+    const { email, password } = ctx.request.body
+
+    let u
     try {
-      const { email, password } = ctx.request.body
-
       // Check if account  exists
-      const u = await ctx.models.User.findOne({ where: { email } })
-      if (!u) {
-        throw new Error(
-          JSON.stringify({
-            status: 404,
-            message: 'Account does not exist'
-          })
-        )
-      }
+      u = await ctx.models.User.findOne({ where: { email } })
+      if (!u) ctx.throw(ctx, 404, 'User not found')
+    } catch (e) {
+      ctx.throw(ctx, 500, 'Database error', e)
+      return
+    }
 
+    try {
       // Compare password
       if (!(await bcrypt.compare(password, u.dataValues.password))) {
-        throw new Error(
-          JSON.stringify({
-            status: 401,
-            message: 'Incorrect password'
-          })
-        )
+        ctx.throw(ctx, 401, 'Incorrect password')
       }
+    } catch (e) {
+      ctx.throw(ctx, 500, 'bcrypt error', e)
+      return
+    }
 
+    // Create token
+    try {
+      const token = jwt.createToken(u.dataValues)
       ctx.send(ctx, 200, true, `Logged in as ${u.dataValues.fullName}`, {
-        token: await jwt.createToken(u.dataValues)
+        token
       })
     } catch (e) {
-      const err = JSON.parse(e.message)
-      ctx.throw(ctx, err.status || 500, err.message || e.message, err.error)
+      ctx.throw(ctx, 500, 'Unable to sign token', e)
     }
   }
 }

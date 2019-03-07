@@ -20,19 +20,13 @@ module.exports = {
     const { username, email, password } = ctx.request.body
 
     // Add to db and check for errors
+    let u
     try {
-      const u = await ctx.models.User.create({
+      u = await ctx.models.User.create({
         username,
         email,
         password: await bcrypt.hash(password, 14)
       })
-
-      // Create token
-      const token = jwt.createToken(u.dataValues)
-      // Check if token was signed correctly
-      token
-        ? ctx.send(ctx, 200, true, 'User created', { token })
-        : ctx.throw(ctx, 500, "Couldn't sign token (JWT Error)")
     } catch (e) {
       // Check for duplicate email and username
       e.name === 'SequelizeUniqueConstraintError'
@@ -45,7 +39,16 @@ module.exports = {
             e
           )
         : ctx.throw(ctx, 500, 'Database error', e)
-        return
+      return
+    }
+
+    // Create token
+    try {
+      const token = jwt.createToken(u.dataValues)
+      ctx.send(ctx, 200, true, 'User created', { token })
+    } catch (e) {
+      ctx.throw(ctx, 500, 'Unable to sign token', e)
+      return
     }
   }
 }
