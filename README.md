@@ -16,3 +16,9 @@ Koa boilerplate app which uses mysql as it's database and Sequelize as an ORM.
 ## TODO
 
 [ ] Add testing with jest
+
+
+## Future
+
+- Reset password
+- Verify email
