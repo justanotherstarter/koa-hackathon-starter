@@ -1,26 +1,30 @@
 const jwt = require('../../../lib/jwt')
+const Sequelize = require('sequelize')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 
 module.exports = {
   schema: Joi.object().keys({
-    email: Joi.string()
-      .email()
-      .required(),
+    identifier: Joi.string().required(),
     password: Joi.string()
       .min(8)
       .max(32)
       .required()
   }),
   handler: async ctx => {
-    const { email, password } = ctx.request.body
+    const { identifier, password } = ctx.request.body
 
     let u
     try {
       // Check if account  exists
-      u = await ctx.models.User.findOne({ where: { email } })
+      u = await ctx.models.User.findOne({
+        where: {
+          [Sequelize.Op.or]: [{ email: identifier }, { username: identifier }]
+        }
+      })
       if (!u) ctx.throw(ctx, 404, 'User not found')
     } catch (e) {
+      console.log(e)
       ctx.throw(ctx, 500, 'Database error', e)
       return
     }
@@ -38,7 +42,7 @@ module.exports = {
     // Create token
     try {
       const token = jwt.createToken(u.dataValues)
-      ctx.send(ctx, 200, true, `Logged in as ${u.dataValues.fullName}`, {
+      ctx.send(ctx, 200, true, `Logged in as ${u.dataValues.username}`, {
         token
       })
     } catch (e) {
