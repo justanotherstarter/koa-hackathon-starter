@@ -1,6 +1,6 @@
 # koa-hackathon-starter
 
-Koa boilerplate app which uses mysql as it's database and Sequelize as an ORM.
+Koa boilerplate app which uses postgres as it's database and Sequelize as an ORM.
 
 ## Setup
 
