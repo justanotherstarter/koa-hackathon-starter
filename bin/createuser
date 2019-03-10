@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+const User = require('../models/User')
+
+!(async function main() {
+  if (!process.argv[2] || !process.argv[3] || !process.argv[4]) {
+    console.log('Usage: ./bin/createuser email username password')
+  }
+
+  const email = process.argv[2]
+  const username = process.argv[3]
+  const password = process.argv[4]
+
+  const u = await User.create({ email, username, password  })
+  console.log(u.dataValues)
+
+  process.exit()
+})()
+
