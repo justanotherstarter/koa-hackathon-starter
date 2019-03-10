@@ -8,6 +8,15 @@ const User = db.define('user', {
   password: { type: Sequelize.STRING, required: true }
 })
 
+User.beforeSave(user => {
+  return bcrypt
+    .hash(user.dataValues.password, 16)
+    .then(password => (user.password = password))
+    .catch(e => {
+      throw e
+    })
+})
+
 User.beforeUpdate(user => {
   return bcrypt
     .hash(user.dataValues.password, 16)
