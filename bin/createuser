@@ -14,9 +14,12 @@ const User = require('../models/User')
   const username = process.argv[3]
   const password = process.argv[4]
 
-  const u = await User.create({ email, username, password  })
-  console.log(u.dataValues)
+  try {
+    const u = await User.create({ email, username, password })
+    console.log(u.dataValues)
+  } catch (e) {
+    console.error(e)
+  }
 
   process.exit()
 })()
-
