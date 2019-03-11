@@ -32,7 +32,7 @@ module.exports = {
       e.name === 'SequelizeUniqueConstraintError'
         ? ctx.throw(
             ctx,
-            500,
+            400,
             `An account with the same ${Object.keys(e.fields).join(
               ','
             )} is already registered`,
