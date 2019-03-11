@@ -17,4 +17,4 @@ Koa boilerplate app which uses postgres as it's database and Sequelize as an ORM
 
 [ ] Add testing with jest
 [ ] Add reset password
-[ ] Add verify email
+[ ] Add profile update (change username, email)
