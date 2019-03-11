@@ -23,19 +23,19 @@
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-compress": "^3.0.0",
-    "koa-helmet": "^4.0.0",
+    "koa-helmet": "^4.1.0",
     "koa-logger": "^3.2.0",
     "koa-response-time": "^2.1.0",
     "koa-router": "github:dotangad/koa-router",
     "koa-static": "^5.0.0",
     "pg": "^7.8.2",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.43.0"
   },
   "devDependencies": {
     "eslint": "^5.15.1",
-    "eslint-plugin-prettier": "^3.0.1",
     "eslint-config-prettier": "^4.1.0",
-    "nodemon": "^1.18.9",
+    "eslint-plugin-prettier": "^3.0.1",
+    "nodemon": "^1.18.10",
     "prettier": "^1.16.4"
   }
 }
