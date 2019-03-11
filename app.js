@@ -7,7 +7,7 @@ const rt = require('koa-response-time')
 const static = require('koa-static')
 const compress = require('koa-compress')
 const helmet = require('koa-helmet')
-const loggerTransporter = require('debug')('koa-logger')
+const debugLogger = require('debug')('koa-logger')
 const routes = require('./routes')
 
 const app = new Koa()
@@ -27,10 +27,10 @@ app.context.throw = (ctx, status, message, error) => {
 }
 
 // Mount models onto app.context
+const models = {}
 const modelFiles = fs
   .readdirSync('./models/')
   .filter(f => path.extname(f) === '.js')
-const models = {}
 for (let model of modelFiles) {
   Object.defineProperty(models, path.basename(model, '.js'), {
     value: require(`./models/${model}`),
@@ -39,10 +39,16 @@ for (let model of modelFiles) {
 }
 Object.defineProperty(app.context, 'models', { value: models, writable: false })
 
-// Serve static assets for react app
+// Mount sequelize operators onto app.context
+Object.defineProperty(app.context, 'SequelizeOp', {
+  value: require('sequelize').Op,
+  writable: false
+})
+
+// Serve static assets
 app.use(static(__dirname + '/static', { defer: true }))
 
-app.use(logger(str => loggerTransporter(str)))
+app.use(logger(str => debugLogger(str)))
 app.use(rt())
 app.use(compress())
 app.use(helmet())
@@ -51,7 +57,7 @@ app.use(helmet())
 app.use(
   bodyParser({
     enableTypes: ['json'],
-    onerror: (error, ctx) => ctx.throw(ctx, 400, 'Bodyparser error', error)
+    onerror: (error, ctx) => ctx.throw(ctx, 400, 'Bad body', error)
   })
 )
 

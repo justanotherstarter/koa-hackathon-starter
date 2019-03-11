@@ -1,5 +1,4 @@
 const jwt = require('../../../lib/jwt')
-const Sequelize = require('sequelize')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
 
@@ -19,7 +18,10 @@ module.exports = {
       // Check if account  exists
       u = await ctx.models.User.findOne({
         where: {
-          [Sequelize.Op.or]: [{ email: identifier }, { username: identifier }]
+          [ctx.SequelizeOp.or]: [
+            { email: identifier },
+            { username: identifier }
+          ]
         }
       })
       if (!u) ctx.throw(ctx, 404, 'User not found')
