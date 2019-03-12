@@ -3,6 +3,7 @@ const { validateAgainst } = require('../../../lib/validation')
 const registerHandler = require('./register')
 const loginHandler = require('./login')
 const verifyEmailHandler = require('./verifyemail')
+const passwordReset = require('./passwordReset')
 const rtr = new Router()
 
 rtr.all('/', async ctx => {
@@ -15,6 +16,15 @@ rtr.post(
   registerHandler.handler
 )
 rtr.post('/login', validateAgainst(loginHandler.schema), loginHandler.handler)
-rtr.post('/verifyemail', verifyEmailHandler.handler)
+rtr.post(
+  '/verifyemail',
+  validateAgainst(verifyEmailHandler.schema),
+  verifyEmailHandler.handler
+)
+rtr.use(
+  '/passwordreset',
+  passwordReset.routes(),
+  passwordReset.allowedMethods()
+)
 
 module.exports = rtr

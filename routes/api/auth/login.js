@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const jwt = require('../../../lib/jwt')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
@@ -24,9 +25,11 @@ module.exports = {
           ]
         }
       })
-      if (!u) ctx.throw(ctx, 404, 'User not found')
+      if (!u) {
+        ctx.throw(ctx, 404, 'User not found')
+        return
+      }
     } catch (e) {
-      console.log(e)
       ctx.throw(ctx, 500, 'Database error', e)
       return
     }
@@ -35,9 +38,10 @@ module.exports = {
       // Compare password
       if (!(await bcrypt.compare(password, u.dataValues.password))) {
         ctx.throw(ctx, 401, 'Incorrect password')
+        return
       }
     } catch (e) {
-      ctx.throw(ctx, 500, 'bcrypt error', e)
+      ctx.throw(ctx, 500, "Couldn't compare password", e)
       return
     }
 
@@ -49,6 +53,7 @@ module.exports = {
       })
     } catch (e) {
       ctx.throw(ctx, 500, 'Unable to sign token', e)
+      return
     }
   }
 }

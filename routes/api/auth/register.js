@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
-const bcrypt = require('bcrypt')
 const Joi = require('joi')
 const crypto = require('crypto')
+const bcrypt = require('bcrypt')
 const jwt = require('../../../lib/jwt')
 const mail = require('../../../lib/mail')
 
@@ -19,7 +19,6 @@ module.exports = {
       .required()
   }),
   handler: async ctx => {
-    console.log(JSON.parse(JSON.stringify(ctx)))
     const { username, email, password } = ctx.request.body
     const emailVerificationToken = crypto.randomBytes(20).toString('hex')
 
@@ -30,7 +29,7 @@ module.exports = {
         username,
         email,
         password: await bcrypt.hash(password, 14),
-        emailVerificationToken
+        emailVerificationToken: await bcrypt.hash(emailVerificationToken, 14)
       })
     } catch (e) {
       // Check for duplicate email and username
@@ -50,17 +49,18 @@ module.exports = {
     const emailVerificationURL = `${ctx.protocol}://${
       ctx.header.host
     }/auth/verifyemail?id=${u.dataValues.id}&token=${emailVerificationToken}`
-    console.log({ emailVerificationToken, emailVerificationURL })
     try {
       await mail(
         u.dataValues.email,
         'Verify your email',
-        `Thanks for registering for APP_NAME!<br><br>
+        `Thanks for registering for ${process.env.APP_NAME}!<br><br>
 
-      Verify your email here: <a href="${emailVerificationURL}">${emailVerificationURL}</a><br><br>
+      Verify your email here: <br><a href="${emailVerificationURL}">${emailVerificationURL}</a><br><br>
+      
+      You might need to copy and paste the link into your browser if it doesn't work when you click on it.<br><br>
 
-      Regards,
-      The APP_NAME team`
+      Regards,<br>
+      The ${process.env.APP_NAME} team`
       )
     } catch (e) {
       // Delete account

@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const PasswordResetAttempt = require('../models/PasswordResetAttempt')
-const bcrypt = require('bcrypt')
 const db = require('../lib/db')
 
 const User = db.define('user', {
@@ -12,31 +11,5 @@ const User = db.define('user', {
 })
 
 User.hasMany(PasswordResetAttempt)
-
-User.beforeSave(user => {
-  return bcrypt
-    .hash(user.dataValues.password, 16)
-    .then(password => {
-      user.dataValues.password = password
-      return bcrypt.hash(user.dataValues.emailVerificationToken, 16)
-    })
-    .then(emailVerificationToken => {
-      user.dataValues.emailVerificationToken = emailVerificationToken
-    })
-    .catch(e => {
-      throw e
-    })
-})
-
-User.beforeUpdate(user => {
-  return user.dataValues.password !== user._previousDataValues.password
-    ? bcrypt
-        .hash(user.dataValues.password, 16)
-        .then(password => (user.dataValues.password = password))
-        .catch(e => {
-          throw e
-        })
-    : null
-})
 
 module.exports = User
