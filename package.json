@@ -8,7 +8,8 @@
     "serve": "./bin/serve",
     "serve:dev": "nodemon bin/serve",
     "createtables": "./bin/createtables",
-    "createtables-force": "./bin/createtables -f"
+    "createtables-force": "./bin/createtables -f",
+    "createuser": "./bin/createuser"
   },
   "keywords": [],
   "author": "Angad Singh <angadsingh567890@gmail.com>",

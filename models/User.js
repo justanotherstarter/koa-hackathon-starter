@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const PasswordResetAttempt = require('../models/PasswordResetAttempt')
+const PasswordResetAttempt = require('./PasswordResetAttempt')
 const db = require('../lib/db')
 
 const User = db.define('user', {
