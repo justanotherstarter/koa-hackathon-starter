@@ -15,7 +15,7 @@ Koa boilerplate app which uses postgres as it's database and Sequelize as an ORM
 
 ## TODO
 
-[ ] Add testing with jest
-[ ] Dockerize - use docker-compose so that you can have different containers for db and app
-[ ] Add profile update (change username, email)
-[ ] Add token blacklist
+- [ ] Add testing with jest
+- [ ] Dockerize - use docker-compose so that you can have different containers for db and app
+- [ ] Add profile update (change username, email)
+- [ ] Add token blacklist
