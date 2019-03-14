@@ -27,16 +27,6 @@ module.exports = {
       return
     }
 
-    // Blacklist token
-    try {
-      await ctx.models.BlacklistedToken.create({ token: ctx.state.token })
-    } catch (e) {
-      e.name === 'SequelizeUniqueConstraintError'
-        ? ctx.throw(ctx, 400, 'Token already blacklisted')
-        : ctx.throw(ctx, 500, 'Database error')
-      return
-    }
-
     const emailVerificationToken = crypto.randomBytes(20).toString('hex')
 
     // Change the email
@@ -50,6 +40,16 @@ module.exports = {
       e.name === 'SequelizeUniqueConstraintError'
         ? ctx.throw(ctx, 400, 'Email already in use')
         : ctx.throw(ctx, 500, 'Unable to update email', e)
+      return
+    }
+
+    // Blacklist token
+    try {
+      await ctx.models.BlacklistedToken.create({ token: ctx.state.token })
+    } catch (e) {
+      e.name === 'SequelizeUniqueConstraintError'
+        ? ctx.throw(ctx, 400, 'Token already blacklisted')
+        : ctx.throw(ctx, 500, 'Database error')
       return
     }
 
