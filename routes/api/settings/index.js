@@ -1,22 +1,13 @@
 const Router = require('koa-router')
-const { validateAgainst } = require('../../../lib/validation')
 const jwt = require('../../../lib/jwt')
-const changeUsernameHandler = require('./usernameChange')
-const changeEmailHandler = require('./emailChange')
+const changeRoutes = require('./change')
 const rtr = new Router()
 
-rtr.post(
-  '/usernamechange',
+rtr.use(
+  '/change',
   jwt.verifyToken,
-  validateAgainst(changeUsernameHandler.schema),
-  changeUsernameHandler.handler
-)
-
-rtr.post(
-  '/emailchange',
-  jwt.verifyToken,
-  validateAgainst(changeEmailHandler.schema),
-  changeEmailHandler.handler
+  changeRoutes.routes(),
+  changeRoutes.allowedMethods()
 )
 
 module.exports = rtr

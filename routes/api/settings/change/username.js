@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const jwt = require('../../../lib/jwt')
+const jwt = require('../../../../lib/jwt')
 
 module.exports = {
   schema: Joi.object().keys({

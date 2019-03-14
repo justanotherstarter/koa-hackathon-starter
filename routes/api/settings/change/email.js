@@ -1,8 +1,8 @@
 const Joi = require('joi')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
-const mail = require('../../../lib/mail')
-const jwt = require('../../../lib/jwt')
+const mail = require('../../../../lib/mail')
+const jwt = require('../../../../lib/jwt')
 
 module.exports = {
   schema: Joi.object().keys({
