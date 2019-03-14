@@ -50,8 +50,6 @@ module.exports = {
       return
     }
 
-    console.log(u)
-
     // Create new token
     let jwtoken
     try {

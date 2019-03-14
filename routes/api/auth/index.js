@@ -1,7 +1,9 @@
 const Router = require('koa-router')
 const { validateAgainst } = require('../../../lib/validation')
+const jwt = require('../../../lib/jwt')
 const registerHandler = require('./register')
 const loginHandler = require('./login')
+const logoutHandler = require('./logout')
 const verifyEmailHandler = require('./verifyemail')
 const passwordReset = require('./passwordReset')
 const rtr = new Router()
@@ -16,6 +18,7 @@ rtr.post(
   registerHandler.handler
 )
 rtr.post('/login', validateAgainst(loginHandler.schema), loginHandler.handler)
+rtr.post('/logout', jwt.verifyToken, logoutHandler.handler)
 rtr.post(
   '/verifyemail',
   validateAgainst(verifyEmailHandler.schema),

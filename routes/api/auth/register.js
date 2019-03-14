@@ -77,9 +77,9 @@ module.exports = {
     // Create token
     try {
       const token = jwt.createToken(u.dataValues)
-      ctx.send(ctx, 200, true, 'User created', { token })
+      ctx.send(ctx, 201, true, 'User created', { token })
     } catch (e) {
-      ctx.throw(ctx, 500, 'Unable to sign token', e)
+      ctx.send(ctx, 201, true, 'User created')
       return
     }
   }
