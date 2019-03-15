@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    container_name: koa-hackathon-starter-db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: koa-hackathon-starter
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  web:
+    image: koa-hackathon-starter
+    container_name: koa-hackathon-starter
+    environment:
+      NODE_ENV:production
+      APP_NAME:koa-hackathon-starter
+      DEBUG:koa[^\w][^r]*
+      PORT:8080
+      DB_HOST:localhost
+      DB_PORT:5432
+      DB_NAME:koa-hackathon-starter
+      DB_USER:root
+      DB_PASS:root
+      JWT_SECRET:e8d5cf65dae72adca3aa7bada5f3c48c5504f11f0e65ce8f60
+      JWT_ISS:koa-hackathon-starter
+      JWT_SUB:khs-auth
+      JWT_AUD:khs-user
+      SG_KEY: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
+    depends_on:
+      - db
+    ports:
+      - "8080:3032"
