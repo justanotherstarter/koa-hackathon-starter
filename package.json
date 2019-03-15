@@ -1,8 +1,9 @@
 {
   "name": "koa-hackathon-starter",
-  "version": "1.1.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.3.0",
+  "repository": "https://github.com/dotangad/koa-hackathon-starter",
+  "description": "Boilerplate code for Koa APIs",
+  "main": "bin/serve",
   "scripts": {
     "createscripts": "chmod a+x ./bin/*",
     "serve": "./bin/serve",
@@ -11,7 +12,10 @@
     "createtables-force": "./bin/createtables -f",
     "createuser": "./bin/createuser"
   },
-  "keywords": [],
+  "keywords": [
+    "api",
+    "koa"
+  ],
   "author": "Angad Singh <angadsingh567890@gmail.com>",
   "license": "MIT",
   "dependencies": {

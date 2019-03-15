@@ -1,5 +1,5 @@
 /* eslint-disable quotes */
-const Joi = require('Joi')
+const Joi = require('joi')
 const bcrypt = require('bcrypt')
 const jwt = require('../../../lib/jwt')
 
