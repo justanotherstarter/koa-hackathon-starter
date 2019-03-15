@@ -44,6 +44,6 @@ module.exports = {
       return
     }
 
-    ctx.send(ctx, 201, true, 'User updated')
+    ctx.send(ctx, 201, true, 'Password changed')
   }
 }

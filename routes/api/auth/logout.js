@@ -10,6 +10,6 @@ module.exports = {
       return
     }
 
-    ctx.send(ctx, 201, 'Logged out')
+    ctx.send(ctx, 200, 'Logged out')
   }
 }

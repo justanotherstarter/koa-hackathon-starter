@@ -27,6 +27,12 @@ module.exports = {
       return
     }
 
+    // Check if the user is trying to change the email to the same email
+    if (ctx.request.body.email === user.dataValues.email) {
+      ctx.throw(ctx, 400, 'Email already in use')
+      return
+    }
+
     const emailVerificationToken = crypto.randomBytes(20).toString('hex')
 
     // Change the email
@@ -77,7 +83,7 @@ module.exports = {
 
     // Send new token
     try {
-      const token = await jwt.createToken(user)
+      const token = await jwt.createToken(user.dataValues)
       ctx.send(ctx, 201, true, 'Email updated', { token })
     } catch (e) {
       ctx.send(ctx, 201, true, 'Email updated')

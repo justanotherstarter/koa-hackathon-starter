@@ -1,5 +1,5 @@
 const Router = require('koa-router')
-const { validateAgainst } = require('../../../lib/validation')
+const { validateAgainst } = require('../../../../lib/validation')
 const usernameHandler = require('./username')
 const emailHandler = require('./email')
 const passwordHandler = require('./password')

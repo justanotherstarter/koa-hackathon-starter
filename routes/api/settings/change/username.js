@@ -9,7 +9,7 @@ module.exports = {
     // Find user
     let user
     try {
-      user = ctx.models.User.findOne({
+      user = await ctx.models.User.findOne({
         where: { id: ctx.state.tokenPayload.id }
       })
     } catch (e) {
@@ -19,6 +19,12 @@ module.exports = {
 
     if (!user) {
       ctx.throw(ctx, 400, 'Invalid token')
+      return
+    }
+
+    // Check if the user is trying to change the username to the same username
+    if (ctx.request.body.username === user.dataValues.username) {
+      ctx.throw(ctx, 400, 'Username already in use')
       return
     }
 
@@ -34,7 +40,7 @@ module.exports = {
 
     // Add token to blacklist
     try {
-      await ctx.models.BlacklistedTokens.create({ token: ctx.state.token })
+      await ctx.models.BlacklistedToken.create({ token: ctx.state.token })
     } catch (e) {
       ctx.throw(ctx, 500, 'Database error', e)
       return
@@ -42,10 +48,10 @@ module.exports = {
 
     // Sign new token
     try {
-      const token = await jwt.createToken(user)
-      ctx.send(ctx, 201, 'Username changed', { token })
+      const token = await jwt.createToken(user.dataValues)
+      ctx.send(ctx, 201, true, 'Username changed', { token })
     } catch (e) {
-      ctx.send(ctx, 201, 'Username changed')
+      ctx.send(ctx, 201, true, 'Username changed')
     }
   }
 }

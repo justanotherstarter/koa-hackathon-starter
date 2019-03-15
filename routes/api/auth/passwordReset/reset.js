@@ -51,7 +51,7 @@ module.exports = {
 
     // Update password
     try {
-      await u.update({ password: newPassword })
+      await u.update({ password: await bcrypt.hash(newPassword, 14) })
       await openResets[0].update({ used: true, token: null })
     } catch (e) {
       ctx.throw(ctx, 500, 'Database error', e)
@@ -61,9 +61,9 @@ module.exports = {
     // Create new token
     let jwtoken
     try {
-      jwtoken = await jwt.createToken(u)
+      jwtoken = await jwt.createToken(u.dataValues)
     } catch (e) {
-      ctx.send(ctx, 200, true, 'Email verified')
+      ctx.send(ctx, 200, true, 'Password reset')
       return
     }
 

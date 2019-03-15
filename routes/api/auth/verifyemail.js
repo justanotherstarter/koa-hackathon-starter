@@ -53,7 +53,7 @@ module.exports = {
     // Create new token
     let jwtoken
     try {
-      jwtoken = await jwt.createToken(u)
+      jwtoken = await jwt.createToken(u.dataValues)
     } catch (e) {
       ctx.send(ctx, 200, true, 'Email verified')
       return
