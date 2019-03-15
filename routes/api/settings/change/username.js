@@ -49,9 +49,9 @@ module.exports = {
     // Sign new token
     try {
       const token = await jwt.createToken(user.dataValues)
-      ctx.send(ctx, 201, true, 'Username changed', { token })
+      ctx.send(ctx, 200, true, 'Username changed', { token })
     } catch (e) {
-      ctx.send(ctx, 201, true, 'Username changed')
+      ctx.send(ctx, 200, true, 'Username changed')
     }
   }
 }

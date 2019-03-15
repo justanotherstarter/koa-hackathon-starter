@@ -84,9 +84,9 @@ module.exports = {
     // Send new token
     try {
       const token = await jwt.createToken(user.dataValues)
-      ctx.send(ctx, 201, true, 'Email updated', { token })
+      ctx.send(ctx, 200, true, 'Email updated', { token })
     } catch (e) {
-      ctx.send(ctx, 201, true, 'Email updated')
+      ctx.send(ctx, 200, true, 'Email updated')
     }
   }
 }
