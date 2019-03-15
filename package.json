@@ -1,7 +1,7 @@
 {
   "name": "koa-hackathon-starter",
   "version": "1.1.0",
-  "description": "",
+  "description": "Boilerplate code for Koa APIs",
   "main": "index.js",
   "scripts": {
     "createscripts": "chmod a+x ./bin/*",
@@ -11,7 +11,7 @@
     "createtables-force": "./bin/createtables -f",
     "createuser": "./bin/createuser"
   },
-  "keywords": [],
+  "keywords": ["api", "koa", "postgres", "sequelize", "joi"],
   "author": "Angad Singh <angadsingh567890@gmail.com>",
   "license": "MIT",
   "dependencies": {
