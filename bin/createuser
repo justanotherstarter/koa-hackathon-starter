@@ -15,7 +15,13 @@ const User = require('../models/User')
   const password = process.argv[4]
 
   try {
-    const u = await User.create({ email, username, password })
+    const u = await User.create({
+      email,
+      username,
+      password,
+      emailVerified: true,
+      emailVerificationToken: null
+    })
     console.log(u.dataValues)
   } catch (e) {
     console.error(e)
