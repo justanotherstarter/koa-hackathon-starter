@@ -4,13 +4,13 @@ const changeRoutes = require('./change')
 const deleteHandler = require('./deleteaccount')
 const rtr = new Router()
 
+rtr.delete('/', jwt.verifyToken, deleteHandler.handler)
+
 rtr.use(
   '/change',
   jwt.verifyToken,
   changeRoutes.routes(),
   changeRoutes.allowedMethods()
 )
-
-rtr.post('/deleteaccount', jwt.verifyToken, deleteHandler.handler)
 
 module.exports = rtr
