@@ -61,7 +61,6 @@ module.exports = {
         token
       })
     } catch (e) {
-      console.log(e)
       ctx.throw(ctx, 500, 'Database error', e)
       return
     }

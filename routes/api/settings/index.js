@@ -6,11 +6,6 @@ const rtr = new Router()
 
 rtr.delete('/', jwt.verifyToken, deleteHandler.handler)
 
-rtr.use(
-  '/change',
-  jwt.verifyToken,
-  changeRoutes.routes(),
-  changeRoutes.allowedMethods()
-)
+rtr.use('/change', changeRoutes.routes(), changeRoutes.allowedMethods())
 
 module.exports = rtr

@@ -4,7 +4,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const User = require('../models/User')
-const bcrypt = require('bcrypt')
 
 !(async function main() {
   if (!process.argv[2] || !process.argv[3] || !process.argv[4]) {
@@ -19,7 +18,7 @@ const bcrypt = require('bcrypt')
     const u = await User.create({
       email,
       username,
-      password: await bcrypt.hash(password, 14),
+      password,
       emailVerified: true,
       emailVerificationToken: null
     })

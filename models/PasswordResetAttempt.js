@@ -7,15 +7,12 @@ const PasswordResetAttempt = db.define('passwordreset', {
   token: { type: Sequelize.STRING, required: true }
 })
 
-PasswordResetAttempt.beforeSave(attempt => {
-  return attempt.dataValues.used
-    ? null
-    : bcrypt
-        .hash(attempt.dataValues.token, 16)
-        .then(token => (attempt.dataValues.token = token))
-        .catch(e => {
-          throw e
-        })
+PasswordResetAttempt.beforeSave(async attempt => {
+  try {
+    return attempt.used ? null : await bcrypt.hash(attempt.token, 16)
+  } catch (err) {
+    throw err
+  }
 })
 
 module.exports = PasswordResetAttempt

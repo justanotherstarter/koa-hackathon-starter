@@ -1,6 +1,5 @@
 const Joi = require('joi')
 const crypto = require('crypto')
-const bcrypt = require('bcrypt')
 const mail = require('../../../../lib/mail')
 const jwt = require('../../../../lib/jwt')
 
@@ -40,7 +39,7 @@ module.exports = {
       user = await user.update({
         email: ctx.request.body.email,
         emailVerified: false,
-        emailVerificationToken: await bcrypt.hash(emailVerificationToken, 14)
+        emailVerificationToken
       })
     } catch (e) {
       e.name === 'SequelizeUniqueConstraintError'
@@ -53,9 +52,7 @@ module.exports = {
     try {
       await ctx.models.BlacklistedToken.create({ token: ctx.state.token })
     } catch (e) {
-      e.name === 'SequelizeUniqueConstraintError'
-        ? ctx.throw(ctx, 400, 'Token already blacklisted')
-        : ctx.throw(ctx, 500, 'Database error')
+      ctx.throw(ctx, 500, 'Database error')
       return
     }
 

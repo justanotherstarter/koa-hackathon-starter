@@ -1,7 +1,6 @@
 /* eslint-disable quotes */
 const Joi = require('joi')
 const crypto = require('crypto')
-const bcrypt = require('bcrypt')
 const jwt = require('../../../lib/jwt')
 const mail = require('../../../lib/mail')
 
@@ -28,8 +27,8 @@ module.exports = {
       u = await ctx.models.User.create({
         username,
         email,
-        password: await bcrypt.hash(password, 14),
-        emailVerificationToken: await bcrypt.hash(emailVerificationToken, 14)
+        password,
+        emailVerificationToken
       })
     } catch (e) {
       // Check for duplicate email and username

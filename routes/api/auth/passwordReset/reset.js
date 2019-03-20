@@ -44,7 +44,6 @@ module.exports = {
         return
       }
     } catch (e) {
-      console.log(e)
       ctx.throw(ctx, 500, "Couldn't verify token", e)
       return
     }

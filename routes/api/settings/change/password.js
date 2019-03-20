@@ -38,7 +38,7 @@ module.exports = {
 
     // Update password
     try {
-      user = await user.update({ password: await bcrypt.hash(newPassword, 14) })
+      user = await user.update({ password: newPassword })
     } catch (e) {
       ctx.throw(ctx, 500, 'Database error')
       return

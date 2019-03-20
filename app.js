@@ -4,7 +4,7 @@ const path = require('path')
 const bodyParser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const rt = require('koa-response-time')
-const static = require('koa-static')
+const koaStatic = require('koa-static')
 const compress = require('koa-compress')
 const helmet = require('koa-helmet')
 const debugLogger = require('debug')('koa-logger')
@@ -46,7 +46,7 @@ Object.defineProperty(app.context, 'SequelizeOp', {
 })
 
 // Serve static assets
-app.use(static(__dirname + '/static', { defer: true }))
+app.use(koaStatic(__dirname + '/static', { defer: true }))
 
 app.use(logger(str => debugLogger(str)))
 app.use(rt())
